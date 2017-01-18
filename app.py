@@ -27,7 +27,24 @@ def webhook():
     r.headers['Content-Type'] = 'application/json'
     return r
 
+@app.route('/webhook', methods=['GET'])
+def webhook_get():
+    req = request.get_json(silent=True, force=True)
 
+    print("Request:")
+    print(json.dumps(req, indent=4))
+    return '{"name":"pumpkin"}\n'
+
+@app.route('/webhooky', methods=['POST'])
+def webhooky_post():
+    req = request
+    print("Request headers:")
+    print(req.headers)
+    print("Request form:")
+    print(req.form)
+    print("Request data:")
+    print(req.data)
+    return 'Nice work.\n'
 def processRequest(req):
     if req.get("result").get("action") != "yahooWeatherForecast":
         return {}
@@ -98,3 +115,7 @@ if __name__ == '__main__':
     print "Starting app on port %d" % port
 
     app.run(debug=False, port=port, host='0.0.0.0')
+
+#curl http://localhost:5000/api/helloworld/helloworld
+#curl http://localhost:5000/webhook
+#curl --data "birthyear=1905&press=%20OK%20" http://localhost:5000/webhook
